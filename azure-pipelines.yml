@@ -13,22 +13,52 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  
 
 steps:
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '8.x'
+- checkout: 'self'
+  clean: true
 
 
-- task: VSBuild@1
+- task:  DotNetCoreCLI@2
+  displayName: 'Restore NuGet Packages'
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+     command: 'restore'
+     projects: '**/*.csproj'
+  
 
-- task: VSTest@2
+
+  # 🔹 Build
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Solution'
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+   command: 'build'
+   projects: '**/*.csproj'
+   arguments: '--configuration  Debug '
+
+# Publish
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish Web App'
+  inputs:
+     command: 'Publish'
+     projects: '**/*.csproj'
+     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+     zipAfterPublish: true
+
+# 🔹 Deploy karna hai  (ZIP create karega)
+- task: AzureWebApp@1
+  displayName: 'Deploy App'
+  inputs:
+    azureSubscription: 'azure-repo-app'
+    appType: 'webApp'
+    appName: 's1902'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'  # artifact path
+    deploymentMethod: 'zipDeploy'                   # deployment type
+    slotName: 'staging'   
+
+
+  
+
+
