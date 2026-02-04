@@ -47,7 +47,7 @@ steps:
   inputs:
     azureSubscription: 'snehalservice'
     appType: 'webAppLinux'
-    appName: 'mydotnetapp-eafmhghchpehb2f3'
+    appName: 'mydotnetapp'
     package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
 
 
