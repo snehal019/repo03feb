@@ -1,4 +1,4 @@
-# ASP.NET Core (.NET Framework)
+  # ASP.NET Core (.NET Framework)
 # Build and test ASP.NET Core projects targeting the full .NET Framework.
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
@@ -40,3 +40,14 @@ steps:
     publishWebProjects: true
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
+
+# 🔹 Deploy karna hai  (ZIP create karega)
+- task: AzureWebApp@1
+  displayName: 'Deploy to Azure Web App'
+  inputs:
+    azureSubscription: 'snehalservice'
+    appType: 'webAppLinux'
+    appName: 'mydotnetapp'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+
+
