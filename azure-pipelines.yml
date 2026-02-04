@@ -51,9 +51,9 @@ steps:
 - task: AzureWebApp@1
   displayName: 'Deploy App'
   inputs:
-    azureSubscription: 'azure-repo-app'
+    azureSubscription: 's1902'
     appType: 'webApp'
-    appName: 's1902'
+    appName: 'azure-repo-app'
     package: '$(Build.ArtifactStagingDirectory)/**/*.zip'  # artifact path
     deploymentMethod: 'zipDeploy'                   # deployment type
     slotName: 'staging'   
