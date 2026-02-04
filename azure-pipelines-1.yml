@@ -21,7 +21,7 @@ steps:
   displayName: 'Restore NuGet Packages'
   inputs:
      command: 'restore'
-     projects: '$(solution)'
+     projects: '**/*.csproj'
 
   # 🔹 Build
 
@@ -29,7 +29,7 @@ steps:
   displayName: 'Build Solution'
   inputs:
    command: 'build'
-   projects: '$(solution)'
+   projects: '**/*.csproj'
    arguments: '--configuration $(buildConfiguration)'
 
 # 🔹 Publish (ZIP create karega)
@@ -37,7 +37,7 @@ steps:
   displayName: 'Publish Web App'
   inputs:
     command: 'publish'
-    publishWebProjects: true
+    projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
 
