@@ -45,7 +45,7 @@ steps:
 - task: AzureWebApp@1
   displayName: 'Deploy to Azure Web App'
   inputs:
-    azureSubscription: 'snehalservice'
+    azureSubscription: 'mydotnetapp'
     appType: 'webAppLinux'
     appName: 'mydotnetapp-eafmhghchpehb2f3'
     package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
